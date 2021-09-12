@@ -34,12 +34,13 @@ If you are interested in contributing to NATS, read about our...
 [Build-Status-Url]: https://travis-ci.com/github/nats-io/nats-server
 [Build-Status-Image]: https://travis-ci.com/nats-io/nats-server.svg?branch=main
 [Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.7.2
+[Release-Url]: https://github.com/kthomas/nats-server/releases/tag/v2.5.0
 [Release-image]: https://img.shields.io/badge/release-v2.7.2-1eb0fc.svg
 [Coverage-Url]: https://coveralls.io/r/nats-io/nats-server?branch=main
 [Coverage-image]: https://coveralls.io/repos/github/nats-io/nats-server/badge.svg?branch=main
 [ReportCard-Url]: https://goreportcard.com/report/nats-io/nats-server
-[ReportCard-Image]: https://goreportcard.com/badge/github.com/nats-io/nats-server
-[github-release]: https://github.com/nats-io/nats-server/releases/
+[ReportCard-Image]: https://goreportcard.com/badge/github.com/kthomas/nats-server
+[github-release]: https://github.com/kthomas/nats-server/releases/
 
 ## Roadmap
 

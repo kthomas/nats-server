@@ -5,7 +5,7 @@ This file lists the dependencies used in this repository.
 | Dependency | License |
 |-|-|
 | Go | BSD 3-Clause "New" or "Revised" License |
-| github.com/nats-io/nats-server/v2 | Apache License 2.0 |
+| github.com/kthomas/nats-server/v2 | Apache License 2.0 |
 | github.com/golang/protobuf v1.3.5 |  |
 | github.com/nats-io/jwt/v2 v2.0.0-20201015190852-e11ce317263c | Apache License 2.0 |
 | github.com/nats-io/nats.go v1.10.1-0.20201021145452-94be476ad6e0 | Apache License 2.0 |

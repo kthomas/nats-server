@@ -37,7 +37,7 @@ import (
 	"github.com/nats-io/jwt/v2"
 	"github.com/nats-io/nkeys"
 
-	"github.com/nats-io/nats-server/v2/conf"
+	"github.com/kthomas/nats-server/v2/conf"
 )
 
 var allowUnknownTopLevelField = int32(0)
@@ -332,9 +332,10 @@ type WebsocketOpts struct {
 
 	// Authentication section. If anything is configured in this section,
 	// it will override the authorization configuration of regular clients.
-	Username string
-	Password string
-	Token    string
+	BearerAuth *BearerAuth
+	Username   string
+	Password   string
+	Token      string
 
 	// Timeout for the authentication process.
 	AuthTimeout float64

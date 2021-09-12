@@ -38,7 +38,7 @@ import (
 	"time"
 
 	"github.com/nats-io/jwt/v2"
-	"github.com/nats-io/nats-server/v2/server/sysmem"
+	"github.com/kthomas/nats-server/v2/server/sysmem"
 	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nkeys"
 	"github.com/nats-io/nuid"
@@ -5516,7 +5516,7 @@ func TestJetStreamRedeliverAndLateAck(t *testing.T) {
 	}
 }
 
-// https://github.com/nats-io/nats-server/issues/1502
+// https://github.com/kthomas/nats-server/issues/1502
 func TestJetStreamPendingNextTimer(t *testing.T) {
 	s := RunBasicJetStreamServer()
 	defer s.Shutdown()
@@ -10733,7 +10733,7 @@ func TestJetStreamAccountImportAll(t *testing.T) {
 	}
 }
 
-// https://github.com/nats-io/nats-server/issues/1736
+// https://github.com/kthomas/nats-server/issues/1736
 func TestJetStreamServerReload(t *testing.T) {
 	conf := createConfFile(t, []byte(`
 		listen: 127.0.0.1:-1
@@ -11059,7 +11059,7 @@ func TestJetStreamGetLastMsgBySubject(t *testing.T) {
 	}
 }
 
-// https://github.com/nats-io/nats-server/issues/2329
+// https://github.com/kthomas/nats-server/issues/2329
 func TestJetStreamGetLastMsgBySubjectAfterUpdate(t *testing.T) {
 	c := createJetStreamClusterExplicit(t, "JSC", 3)
 	defer c.shutdown()
@@ -11187,6 +11187,61 @@ func TestJetStreamLastSequenceBySubject(t *testing.T) {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// https://github.com/kthomas/nats-server/issues/2314
+func TestJetStreamMaxMsgsPerAndDiscardNew(t *testing.T) {
+	for _, st := range []StorageType{FileStorage, MemoryStorage} {
+		t.Run(st.String(), func(t *testing.T) {
+			c := createJetStreamClusterExplicit(t, "JSC", 3)
+			defer c.shutdown()
+
+			nc, js := jsClientConnect(t, c.randomServer())
+			defer nc.Close()
+
+			cfg := StreamConfig{
+				Name:       "KV",
+				Subjects:   []string{"kv.>"},
+				Storage:    st,
+				Discard:    DiscardNew,
+				MaxMsgsPer: 1,
+				Replicas:   3,
+			}
+
+			req, err := json.Marshal(cfg)
+			if err != nil {
+				t.Fatalf("Unexpected error: %v", err)
+			}
+			// Do manually for now.
+			nc.Request(fmt.Sprintf(JSApiStreamCreateT, cfg.Name), req, time.Second)
+			si, err := js.StreamInfo("KV")
+			if err != nil {
+				t.Fatalf("Unexpected error: %v", err)
+			}
+			if si == nil || si.Config.Name != "KV" {
+				t.Fatalf("StreamInfo is not correct %+v", si)
+			}
+
+			js.Publish("kv.1", []byte("ok"))
+			js.Publish("kv.2", []byte("ok"))
+			js.Publish("kv.3", []byte("ok"))
+
+			if si, _ := js.StreamInfo("KV"); si == nil || si.State.Msgs != 3 {
+				t.Fatalf("Expected 3 messages, got %d", si.State.Msgs)
+			}
+			// This should fail.
+			if pa, err := js.Publish("kv.1", []byte("last")); err == nil {
+				t.Fatalf("Expected an error, got %+v and %v", pa, err)
+			}
+			// Make sure others work after the above failure.
+			if _, err := js.Publish("kv.22", []byte("favorite")); err != nil {
+				t.Fatalf("Unexpected error: %v", err)
+			}
+		})
+	}
+}
+
+>>>>>>> 3bde5c26 (Add jwt bearer authorization)
 func TestJetStreamFilteredConsumersWithWiderFilter(t *testing.T) {
 	s := RunBasicJetStreamServer()
 	defer s.Shutdown()
@@ -11900,7 +11955,7 @@ func TestJetStreamDirectConsumersBeingReported(t *testing.T) {
 	}
 }
 
-// https://github.com/nats-io/nats-server/issues/2290
+// https://github.com/kthomas/nats-server/issues/2290
 func TestJetStreamTemplatedErrorsBug(t *testing.T) {
 	s := RunBasicJetStreamServer()
 	defer s.Shutdown()

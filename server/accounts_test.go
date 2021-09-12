@@ -840,7 +840,7 @@ func TestSimpleMapping(t *testing.T) {
 	}
 }
 
-// https://github.com/nats-io/nats-server/issues/1159
+// https://github.com/kthomas/nats-server/issues/1159
 func TestStreamImportLengthBug(t *testing.T) {
 	s, fooAcc, barAcc := simpleAccountServer(t)
 	defer s.Shutdown()

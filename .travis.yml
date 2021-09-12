@@ -15,7 +15,7 @@ addons:
     - rpm
 env:
 - GO111MODULE=on
-go_import_path: github.com/nats-io/nats-server
+go_import_path: github.com/kthomas/nats-server
 install:
 - go install honnef.co/go/tools/cmd/staticcheck@latest
 - go install github.com/client9/misspell/cmd/misspell@latest

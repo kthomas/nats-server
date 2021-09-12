@@ -32,8 +32,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/kthomas/nats-server/v2/server/sysmem"
 	"github.com/minio/highwayhash"
-	"github.com/nats-io/nats-server/v2/server/sysmem"
 	"github.com/nats-io/nkeys"
 	"github.com/nats-io/nuid"
 	"golang.org/x/crypto/chacha20poly1305"

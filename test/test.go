@@ -30,7 +30,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nats-io/nats-server/v2/server"
+	"github.com/kthomas/nats-server/v2/server"
 )
 
 var tempRoot = filepath.Join(os.TempDir(), "nats-server")

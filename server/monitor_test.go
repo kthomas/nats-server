@@ -198,7 +198,7 @@ func pollVarz(t *testing.T, s *Server, mode int, url string, opts *VarzOptions) 
 	return v
 }
 
-// https://github.com/nats-io/nats-server/issues/2170
+// https://github.com/kthomas/nats-server/issues/2170
 // Just the ever increasing subs part.
 func TestVarzSubscriptionsResetProperly(t *testing.T) {
 	// Run with JS to create a bunch of subs to start.

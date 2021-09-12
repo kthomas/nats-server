@@ -555,6 +555,9 @@ type ClientOpts struct {
 	// Routes and Leafnodes only
 	Import *SubjectPermission `json:"import,omitempty"`
 	Export *SubjectPermission `json:"export,omitempty"`
+
+	// HACK
+	UserJWT string `json:"userJWT,omitempty"`
 }
 
 var defaultOpts = ClientOpts{Verbose: true, Pedantic: true, Echo: true}
@@ -756,6 +759,12 @@ func (c *client) applyAccountLimits() {
 	}
 	c.mpay = jwt.NoLimit
 	c.msubs = jwt.NoLimit
+
+	// HACK
+	if c.opts.JWT == "" && c.opts.UserJWT != "" {
+		c.opts.JWT = c.opts.UserJWT
+	}
+
 	if c.opts.JWT != _EMPTY_ { // user jwt implies account
 		if uc, _ := jwt.DecodeUserClaims(c.opts.JWT); uc != nil {
 			c.mpay = int32(uc.Limits.Payload)
@@ -1780,10 +1789,14 @@ func (c *client) processConnect(arg []byte) error {
 
 	// If websocket client and JWT not in the CONNECT, use the cookie JWT (possibly empty).
 	if ws := c.ws; ws != nil && c.opts.JWT == "" {
-		c.opts.JWT = ws.cookieJwt
+		if c.opts.UserJWT != "" {
+			c.opts.JWT = c.opts.UserJWT // HACK
+		} else {
+			c.opts.JWT = ws.cookieJwt
+		}
 	}
 	// when not in operator mode, discard the jwt
-	if srv != nil && srv.trustedKeys == nil {
+	if srv != nil && srv.trustedKeys == nil && srv.getOpts().CustomClientAuthentication == nil {
 		c.opts.JWT = _EMPTY_
 	}
 	ujwt := c.opts.JWT
@@ -5142,7 +5155,7 @@ func (c *client) doTLSHandshake(typ string, solicit bool, url *url.URL, tlsConfi
 	if err = conn.Handshake(); err != nil {
 		if solicit {
 			// Based on type of error, possibly clear the saved tlsName
-			// See: https://github.com/nats-io/nats-server/issues/1256
+			// See: https://github.com/kthomas/nats-server/issues/1256
 			if _, ok := err.(x509.HostnameError); ok {
 				if host == tlsName {
 					resetTLSName = true
